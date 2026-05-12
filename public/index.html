@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snip — short links that just work</title>
+    <meta name="description" content="A minimal, fast URL shortener with custom aliases, click analytics, and QR codes." />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%82%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <header class="nav">
+      <div class="container nav-inner">
+        <a href="/" class="brand">
+          <span class="logo-mark">snip</span>
+          <span class="logo-dot">.</span>
+        </a>
+        <nav class="nav-links">
+          <a href="#shorten">Shorten</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="https://github.com" target="_blank" rel="noopener" class="ghost">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero" id="shorten">
+        <div class="container">
+          <span class="eyebrow">Short links. No friction.</span>
+          <h1>The fastest way to <span class="grad">shrink</span> a URL.</h1>
+          <p class="lede">
+            Paste any link, get a clean short URL with optional custom alias,
+            built-in click analytics, and a downloadable QR code.
+          </p>
+
+          <form id="shorten-form" class="shorten-form" autocomplete="off">
+            <div class="row">
+              <input
+                id="url-input"
+                name="url"
+                type="text"
+                placeholder="Paste a long URL — e.g. https://example.com/some/very/long/path"
+                required
+              />
+              <button type="submit" id="shorten-btn">
+                <span class="btn-label">Shorten</span>
+                <span class="btn-spin" hidden></span>
+              </button>
+            </div>
+            <div class="row alias-row">
+              <div class="alias-input">
+                <span class="alias-prefix" id="alias-prefix">snip.local/</span>
+                <input
+                  id="alias-input"
+                  name="alias"
+                  type="text"
+                  placeholder="custom-alias (optional)"
+                  pattern="[a-zA-Z0-9_-]{3,32}"
+                  maxlength="32"
+                />
+              </div>
+              <p class="hint">3–32 chars · letters, digits, <code>-</code>, <code>_</code></p>
+            </div>
+            <p class="form-error" id="form-error" hidden></p>
+          </form>
+
+          <!-- Result card -->
+          <div class="result-card" id="result-card" hidden>
+            <div class="result-head">
+              <div>
+                <p class="result-label">Your short link is ready</p>
+                <a class="result-link" id="result-link" href="#" target="_blank" rel="noopener"></a>
+              </div>
+              <div class="result-actions">
+                <button class="btn-secondary" id="copy-btn">Copy</button>
+                <button class="btn-secondary" id="qr-btn">QR code</button>
+              </div>
+            </div>
+            <div class="result-foot">
+              <span class="target-label">→</span>
+              <span class="target-url" id="target-url"></span>
+            </div>
+            <div class="qr-panel" id="qr-panel" hidden>
+              <img id="qr-img" alt="QR code" />
+              <a id="qr-download" download="snip-qr.png" class="btn-secondary">Download PNG</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="features">
+        <div class="container features-grid">
+          <div class="feature">
+            <div class="feature-icon">✂️</div>
+            <h3>Custom aliases</h3>
+            <p>Pick a memorable slug like <code>/launch</code> instead of random characters.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">📈</div>
+            <h3>Click analytics</h3>
+            <p>See click counts and last-visit time for every link you create.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">🔳</div>
+            <h3>QR codes</h3>
+            <p>Generate and download a high-res QR for posters, decks, or business cards.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Local & fast</h3>
+            <p>Runs on Node + SQLite. No external services, no rate limits.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard -->
+      <section class="dashboard" id="dashboard">
+        <div class="container">
+          <div class="section-head">
+            <h2>Your links</h2>
+            <button class="btn-ghost" id="refresh-btn">Refresh</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="links-table" id="links-table">
+              <thead>
+                <tr>
+                  <th>Short</th>
+                  <th>Destination</th>
+                  <th class="num">Clicks</th>
+                  <th>Created</th>
+                  <th class="actions-col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="links-tbody">
+                <tr class="empty">
+                  <td colspan="5">No links yet — create your first one above.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>Built with Express + SQLite · <span id="footer-host"></span></p>
+      </div>
+    </footer>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
