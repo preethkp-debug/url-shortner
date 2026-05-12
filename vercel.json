@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/api/links/:code/qr", "destination": "/api/qr?code=:code" },
+    { "source": "/api/links/:code", "destination": "/api/delete?code=:code" },
+    { "source": "/api/links", "destination": "/api/list" },
+    { "source": "/:code", "destination": "/api/redirect?code=:code" }
+  ]
+}
